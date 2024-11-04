@@ -1,0 +1,178 @@
+{% extends 'tour/base.html' %}
+
+{% block title %}{{ tour.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<div class="container mt-5">
+    <!-- Tour Title and Image -->
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="display-4">{{ tour.title }}</h1>
+            <p class="lead"><strong>Duration:</strong> {{ tour.duration }} days</p>
+            <p><strong>Price:</strong> <span class="text-success">${{ tour.price }}</span></p>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ tour.image.url }}" alt="{{ tour.title }} tour image" class="img-fluid rounded shadow-sm" style="width: 100%; height: auto;">
+        </div>
+    </div>
+    
+    <!-- Tour Description and Highlights -->
+    <div class="row mt-5">
+        <div class="col-md-8">
+            <h3>About the Tour</h3>
+            <p>{{ tour.description }}</p>
+            <h4>Highlights</h4>
+            <ul>
+                <li>Explore stunning landscapes</li>
+                <li>Guided tours by experienced professionals</li>
+                <li>All-inclusive package: accommodation, meals, and transport</li>
+                <li>Special activities like hiking, sightseeing, and more</li>
+            </ul>
+        </div>
+
+        <!-- Booking Section -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                        <form method="POST" action="{% url 'payment_page' tour.id %}">
+                            {% csrf_token %}
+                            <h4 class="text-center mb-3">Book This Tour</h4>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Proceed to Payment</button>
+                        </form>
+                    {% else %}
+                        <p class="text-center text-warning">Please log in to book this tour.</p>
+                        <a href="{% url 'login' %}?next={% url 'tour_detail' tour.id %}" class="btn btn-warning w-100">Log in to Book</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="row" style="margin-top: 2rem;">
+        <div class="col-md-12">
+            <h3>Tour Location</h3>
+            <div id="map" style="height: 600px; width: 100%;"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript to Initialize Map -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize the map at the tour's location
+            const latitude = {{ tour.latitude }};
+            const longitude = {{ tour.longitude }};
+            const map = L.map('map').setView([latitude, longitude], 13);
+
+            // Add the tile layer from OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add a marker for the tour's location
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(`<strong>${{ tour.title }}</strong><br>${{ tour.description }}`)
+                .openPopup();
+
+            // Adjust the map size after a short delay
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 200);
+        });
+    </script>
+
+    <!-- Customer Reviews Section -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3>Customer Reviews</h3>
+            <div class="border p-3 mb-3">
+                <p><strong>John Doe:</strong> "An amazing experience! The tour was well-organized and the sights were breathtaking!"</p>
+            </div>
+            <div class="border p-3 mb-3">
+                <p><strong>Jane Smith:</strong> "Loved every moment of it. Highly recommend this tour for nature lovers!"</p>
+            </div>
+            <a href="#" class="btn btn-secondary">See All Reviews</a>
+        </div>
+    </div>
+
+    <!-- Comment and Feedback Section -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3>Leave a Comment</h3>
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'add_comment' tour.id %}" class="mb-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <div class="d-flex">
+                        <select name="rating" class="form-control mr-2" required style="width: auto;">
+                            <option value="">Select a rating</option>
+                            <option value="1">&#9733; </option>
+                            <option value="2">&#9733;&#9733; </option>
+                            <option value="3">&#9733;&#9733;&#9733; </option>
+                            <option value="4">&#9733;&#9733;&#9733;&#9733; </option>
+                            <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; </option>
+                        </select>
+                        <div class="rating-stars">
+                            <span class="text-warning" style="font-size: 24px;">
+                                <span class="star" data-value="1">&#9733;</span>
+                                <span class="star" data-value="2">&#9733;</span>
+                                <span class="star" data-value="3">&#9733;</span>
+                                <span class="star" data-value="4">&#9733;</span>
+                                <span class="star" data-value="5">&#9733;</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea name="comment" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Comment</button>
+            </form>
+            {% else %}
+            <p class="text-warning">Please log in to leave a comment.</p>
+            <a href="{% url 'login' %}?next={% url 'tour_detail' tour.id %}" class="btn btn-warning">Log in to Comment</a>
+            {% endif %}
+        </div>
+    </div>
+    
+
+
+<!-- Display Existing Comments -->
+<div class="row">
+    <div class="col-md-12">
+        <h4>Recent Comments</h4>
+        {% for feedback in comments %}
+        <div class="border p-3 mb-3">
+            <p><strong>{{ feedback.user.username }}:</strong> {{ feedback.text }} 
+            (Rating: 
+            {% for i in "12345" %}
+                {% if i|add:"0" <= feedback.rating %}
+                    <span class="text-warning">&#9733;</span>  <!-- Filled star -->
+                {% else %}
+                    <span class="text-muted">&#9734;</span>  <!-- Empty star -->
+                {% endif %}
+            {% endfor %}
+            )</p>
+            <small class="text-muted">{{ feedback.created_at|date:"F j, Y, g:i a" }}</small>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">No comments yet. Be the first to leave a comment!</div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<style>
+    /* Map container styling */
+    #map {
+        height: 600px; /* Set map height */
+        width: 100%;   /* Full width */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ tour.title }}</title>
+</head>
+<body>
+    <h1>{{ tour.title }}</h1>
+    <p>{{ tour.description }}</p>
+    <p>Price: ${{ tour.price }}</p>
+    <p>Duration: {{ tour.duration }} days</p>
+    <p>Available Seats: {{ tour.available_seats }}</p>
+    
+    <a href="{% url 'book_tour' tour.id %}">Book this tour</a>
+</body>
+</html>

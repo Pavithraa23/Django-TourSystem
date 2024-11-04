@@ -1,0 +1,48 @@
+<!-- tour_list.html -->
+{% load json_script %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tour Locations</h1>
+    <div id="map"></div>
+
+    <!-- JSON data for tours -->
+    <script id="tours-data" type="application/json">
+        {{ tours_json|json_script:"tours-data" }}
+    </script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const map = L.map("map").setView([51.505, -0.09], 5);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Parse the JSON data from the template context
+            const tours = JSON.parse(document.getElementById('tours-data').textContent);
+
+            // Add markers for each tour
+            tours.forEach(tour => {
+                L.marker([tour.latitude, tour.longitude]).addTo(map)
+                    .bindPopup(`<strong>${tour.title}</strong><br>${tour.description}`);
+            });
+        });
+    </script>
+</body>
+</html>

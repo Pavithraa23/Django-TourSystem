@@ -1,0 +1,25 @@
+{% extends 'tour/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% load static %}
+    <h2 class="text-center mt-5">Login</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" action="{% url 'login' %}">  <!-- Add the action attribute -->
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <p class="mt-3 text-center">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+        </div>
+    </div>
+{% endblock %}

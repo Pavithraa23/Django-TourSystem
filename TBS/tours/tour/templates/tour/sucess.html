@@ -1,0 +1,9 @@
+{% extends 'tour/base.html' %}
+{% load static %}
+{% block title %}Booking Successful{% endblock %}
+
+{% block content %}
+    <h1>Booking Successful!</h1>
+    <p>Your booking for tour ID {{ tour_id }} has been confirmed.</p>
+    <a href="{% url 'tour_detail' tour_id %}">View Tour Details</a>
+{% endblock %}

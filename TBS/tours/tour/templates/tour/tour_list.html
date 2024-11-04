@@ -1,0 +1,58 @@
+{% extends 'tour/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Tour Packages</h1>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a href="{% url 'tour_create' %}" class="btn btn-primary">Add New Package</a>
+        </div>
+        <!-- <div class="col-md-6">
+            <form method="GET" class="form-inline float-right">
+                <input type="text" name="search" class="form-control" placeholder="Search Packages" aria-label="Search Packages">
+                <button type="submit" class="btn btn-secondary ml-2">Search</button>
+            </form>
+        </div> -->
+    </div>
+
+    <div class="row">
+        {% for tour in tours %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-lg border border-light">
+                <img src="{{ tour.image.url }}" alt="{{ tour.name }} image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tour.name }}</h5>
+                    <p class="card-text">{{ tour.description|truncatewords:15 }}</p> <!-- Truncate description to 15 words -->
+                    <p class="card-text"><strong>Price:</strong> ${{ tour.price|floatformat:2 }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'tour_edit' tour.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'tour_delete' tour.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package?');">Delete</a>
+                    <a href="{% url 'tour_detail' tour.pk %}" class="btn btn-info btn-sm mt-2">View Details</a> <!-- Add View Details button -->
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">No tour packages available.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Section (Optional) -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div>
+            <small class="text-muted">Showing {{ tours.paginator.count }} packages</small>
+        </div>
+        <div>
+            {% if tours.has_previous %}
+            <a href="?page={{ tours.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
+            {% endif %}
+            {% if tours.has_next %}
+            <a href="?page={{ tours.next_page_number }}" class="btn btn-secondary btn-sm">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

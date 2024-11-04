@@ -1,0 +1,43 @@
+<!-- admin/booking_list.html -->
+
+{% extends 'tour/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Booking Management</h1>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="alert alert-info">
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Tour</th>
+                <th>Booked On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.user.username }}</td>
+                <td>{{ booking.tour.title }}</td>
+                <td>{{ booking.booked_on }}</td>
+                <td>
+                    <a href="{% url 'booking_delete' booking.pk %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

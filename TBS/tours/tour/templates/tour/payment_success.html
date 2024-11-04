@@ -1,0 +1,13 @@
+{% extends 'tour/base.html' %}
+
+{% block title %}
+    Payment Success
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-success">Payment Successful</h1>
+    <p class="lead">Thank you for booking the tour! Your payment for Tour ID: <strong>{{ tour_id }}</strong> has been processed successfully.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Back to Tours</a>
+</div>
+{% endblock %}

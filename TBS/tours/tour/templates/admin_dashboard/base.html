@@ -1,0 +1,39 @@
+<!-- admin/tour_list.html
+
+
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Tour Management</h1>
+    <a href="{% url 'tour_create' %}" class="btn btn-primary">Add Tour</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tour in tours %}
+            <tr>
+                <td>{{ tour.title }}</td>
+                <td>${{ tour.price }}</td>
+                <td>
+                    <a href="{% url 'tour_edit' tour.pk %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'tour_delete' tour.pk %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} -->
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}

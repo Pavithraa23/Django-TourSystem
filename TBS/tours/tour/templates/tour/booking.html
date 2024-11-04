@@ -1,0 +1,12 @@
+{% extends 'tour/base.html' %}
+
+{% block title %}Booking Confirmation{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Booking Confirmation</h2>
+    <p><strong>Tour:</strong> {{ tour.title }}</p>
+    <p><strong>Price:</strong> ${{ tour.price }}</p>
+    <p><strong>Duration:</strong> {{ tour.duration }} days</p>
+    <p><strong>Booking Date:</strong> {{ booking.date }}</p>
+    <a href="{% url 'my_bookings' %}" class="btn btn-primary">View My Bookings</a>
+{% endblock %}

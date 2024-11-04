@@ -1,0 +1,117 @@
+{% extends 'tour/base.html' %}
+{% load static %}
+
+{% block title %}Explore Our Tours{% endblock %}
+
+{% block content %}
+    <!-- Header Section with Sliding Carousel -->
+    <header class="bg-dark text-white">
+        <div id="tourCarousel" class="carousel slide" data-bs-ride="carousel" style="height: 500px;">
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="height: 500px;">
+                    <img src="{% static 'img/slide1.jpeg' %}" class="d-block w-100" alt="Featured Offer 1" style="object-fit: cover; height: 500px;">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Limited Time Offer!</h3>
+                        <p class="lead">Book now and save 20% on selected tours.</p>
+                        <a href="#" class="btn btn-light btn-lg">Explore Offers</a>
+                    </div>
+                </div>
+                <div class="carousel-item" style="height: 500px;">
+                    <img src="{% static 'img/slide2.jpeg' %}" class="d-block w-100" alt="Featured Offer 2" style="object-fit: cover; height: 500px;">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Best Package Deal!</h3>
+                        <p class="lead">Join our best-selling tour and get exclusive perks.</p>
+                        <a href="#" class="btn btn-light btn-lg">Discover Best Packages</a>
+                    </div>
+                </div>
+                <div class="carousel-item" style="height: 500px;">
+                    <img src="{% static 'img/slide3.jpeg' %}" class="d-block w-100" alt="Featured Offer 1" style="object-fit: cover; height: 500px;">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Special Family Discount!</h3>
+                        <p class="lead">Enjoy special rates for family bookings this month!</p>
+                        <a href="#" class="btn btn-light btn-lg">View Family Offers</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#tourCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#tourCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </header>
+
+
+    <!-- Why Choose Us Section -->
+<section class="my-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Why Choose Us?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>
+                    <i class="fas fa-check-circle fa-2x text-primary mr-2"></i>
+                    Quality Assurance
+                </h4>
+                <p>We prioritize the highest quality in our tours, ensuring memorable experiences for all travelers.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>
+                    <i class="fas fa-shield-alt fa-2x text-primary mr-2"></i>
+                    Safety First
+                </h4>
+                <p>Your safety is our top priority. We implement comprehensive safety measures on all our tours.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>
+                    <i class="fas fa-users fa-2x text-primary mr-2"></i>
+                    Expert Guides
+                </h4>
+                <p>Our knowledgeable guides are passionate about sharing their insights and making your journey unforgettable.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Tour Listings -->
+    <div class="container">
+        <h2 class="text-center mb-4">Available Tours</h2>
+        <div class="row">
+            {% if tours %}
+                {% for tour in tours %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ tour.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ tour.title }}</h5>
+                                <p class="card-text">{{ tour.description|truncatewords:15 }}</p>
+                                <p class="card-text"><strong>${{ tour.price }}</strong> for {{ tour.duration }} days</p>
+                                <a href="{% url 'tour_detail' tour.id %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No tours available at the moment. Please check back later!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if tours.has_previous %}
+                <!-- <li class="page-item"><a class="page-link" href="?q={{ query }}&sort={{ sort_by }}&page=1">First</a></li> -->
+                <li class="page-item"><a class="page-link" href="?q={{ query }}&sort={{ sort_by }}&page={{ tours.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Page {{ tours.number }} of {{ tours.paginator.num_pages }}</span></li>
+            {% if tours.has_next %}
+                <li class="page-item"><a class="page-link" href="?q={{ query }}&sort={{ sort_by }}&page={{ tours.next_page_number }}">Next</a></li>
+                <!-- <li class="page-item"><a class="page-link" href="?q={{ query }}&sort={{ sort_by }}&page={{ tours.paginator.num_pages }}">Last</a></li> -->
+            {% endif %}
+        </ul>
+    </nav>
+    
+{% endblock %}

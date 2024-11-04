@@ -1,0 +1,119 @@
+<!-- {% extends 'tour/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<h1>Edit Profile</h1> -->
+
+<!-- Success/Error Message -->
+<!-- {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data" id="editProfileForm">
+    {% csrf_token %}
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+    </div>
+    <div>
+        <label for="avatar">Avatar:</label>
+        <input type="file" id="avatar" name="avatar" accept="image/*" onchange="previewImage(event)">
+    </div>
+    
+     Display Current Avatar -->
+    <!-- {% if user.avatar %}
+        <div>
+            <h3>Current Avatar:</h3>
+            <img src="{{ user.avatar.url }}" alt="Current Avatar" style="width: 100px; height: 100px;">
+        </div>
+    {% endif %} -->
+    
+    <!-- <button type="submit">Save Changes</button>
+</form> --> 
+
+<!-- Image Preview -->
+<!-- <div id="imagePreview" style="display: none;">
+    <h3>Image Preview:</h3>
+    <img id="preview" src="" alt="Image Preview" style="width: 100px; height: 100px;">
+</div>
+
+<script>
+function previewImage(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    const preview = document.getElementById('preview');
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            imagePreview.style.display = 'block'; // Show the preview div -->
+        <!-- };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.style.display = 'none'; // Hide if no file
+    } -->
+<!-- } -->
+
+<!-- // Optional: Form validation
+document.getElementById('editProfileForm').onsubmit = function() {
+    // Custom validation can go here
+    // e.g., Check if email is valid, etc.
+    return true; // Allow submission
+}; -->
+<!-- </script> -->
+
+<!-- <style>
+    .messages {
+        margin-bottom: 20px;
+    }
+    .message {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    form div {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+    }
+    button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+{% endblock %} -->
